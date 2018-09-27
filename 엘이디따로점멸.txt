@@ -1,0 +1,51 @@
+/*
+  13번 핀 점멸
+  소프트웨어 수정 :  2017. 3. 20.
+  소프트웨어 작성 :  2017. 3. 29.
+  작성자 : 이효범    
+  충남 서산시 해미면 한서대학교 컴퓨터공학과.
+*/
+
+
+long time13 = millis() ;
+long time12 = millis() ;
+
+void setup() 
+{
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+}
+
+void pin13() 
+{
+  if (time13 + 500 < millis()) 
+  {
+    digitalWrite(13, HIGH) ;
+  }
+  
+  if (time13 + 1000 < millis()) 
+  {
+    time13 = millis() ;
+    digitalWrite(13, LOW) ;
+  }
+}
+
+void pin12() 
+{
+  if (time12 + 500 < millis()) 
+  {
+    digitalWrite(12, HIGH) ;
+  }
+  
+  if (time12 + 2000 < millis())
+  {
+    time12 = millis() ;
+    digitalWrite(12, LOW) ;
+  }
+}
+
+void loop() 
+{
+  pin13();
+  pin12();
+}

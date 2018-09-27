@@ -1,0 +1,94 @@
+/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 10. 16
+작성자 : 이효범
+*/
+
+///객체사용///
+
+class Blink {
+    private :
+        long count = 0;
+        long restCount = 0;
+        long blinkRhythm[3] = {0b1010101010101001010100101010, 0b101010010010, 0b1010100};
+        long blinkTemp = 0;
+        int  ground = 0;
+        int  pinNumber = 0;
+        int  rhythmType = 0;
+        int  errorCode = 0;
+        
+        
+    public:
+        Blink(int _ground, int _pinNumber, int _rhythmType){
+            ground = _ground;
+            pinNumber = _pinNumber;
+            rhythmType = _rhythmType;                  
+            error();
+            
+            pinMode(ground, OUTPUT);
+            pinMode(pinNumber, OUTPUT);
+        }
+        
+        Blink(int _pinNumber, int _rhythmType){      
+            pinNumber = _pinNumber;
+            rhythmType = _rhythmType;                     
+            error();
+            
+            pinMode(pinNumber, OUTPUT);
+        }
+         
+    void blinkRun() {        
+        if(errorCode > 0) return;
+        
+        if (count++ < 100000) return blinkRun();
+        count = 0;
+      
+        digitalWrite(pinNumber, blinkTemp & 1);
+        blinkTemp = blinkTemp >> 1;
+        if (blinkTemp == 0) {
+            restCount++;
+            if (restCount == 4) {
+                blinkTemp = blinkRhythm[rhythmType];
+                restCount = 0;
+            }
+        }
+    }
+    
+    void error(){
+        static int pinInfo = 0b0000000000000000;
+        if(ground == pinNumber) errorCode = 1;
+        if(pinNumber > 13 || pinNumber < 0) errorCode = 2; 
+        if(ground > 13 || ground < 0) errorCode = 3;
+        
+        pinInfo >> ground;      
+        if(pinInfo & 1 == 1) errorCode = 4;
+        if(errorCode > 0) return;
+        bitSet(pinInfo,ground);
+        bitSet(pinInfo,pinNumber); 
+    }    
+};
+
+Blink b1(14,13,0);  //error
+Blink b2(11,11,2);  //error
+Blink b3(12,11,1);
+Blink b4(12,11,0);  //error
+Blink b5(9,8,0);
+Blink b6(9,8,2);    //error
+
+
+
+
+void loop() {
+    b1.blinkRun();
+    b2.blinkRun();
+    b3.blinkRun();
+    b4.blinkRun();
+    b5.blinkRun();
+    b6.blinkRun();
+
+}
+
+void setup() {
+}
+]

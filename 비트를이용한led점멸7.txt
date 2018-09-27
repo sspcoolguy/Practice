@@ -1,0 +1,82 @@
+A a = new A(1);
+
+
+/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 05. 31
+작성자 : 이효범
+*/
+#define BIT_TIME  2 
+#define BAKSU_337 0
+#define BAKSU_113 1
+
+void setup(){
+    pinMode(13, OUTPUT);
+}
+
+void loop(){
+    Pin13();
+}
+
+void Pin13(){
+    static long count = 0;
+    if(count++ < 100000) return;
+    count = 0;
+  
+    static long  blinkCycle[2] = {0b1010101010101001010100101010, 0b101010010010};
+    static long  temp = 0;
+    static bool  ledState = LOW;
+    static int   restCount = 0;
+    
+  
+  
+    digitalWrite(13, temp & 1);
+    temp = temp >> 1;
+ 
+    if(temp == 0){
+        restCount++;
+        if (restCount == BIT_TIME) {
+            temp = blinkCycle[BAKSU_113];
+            restCount = 0;
+        }
+    }  
+}
+//////(매개변수이용//////
+#define BIT_TIME  2 
+
+void setup(){
+    pinMode(13, OUTPUT);
+}
+
+void loop(){
+    Pin13(1);
+}
+
+void Pin13(int cycleChoice){
+    static long count = 0;
+    if(count++ < 100000) return;
+    count = 0;
+  
+    static long  blinkCycle[2] = {0b1010101010101001010100101010, 0b101010010010};
+    static long  temp = 0;
+    static bool  ledState = LOW;
+    static int   restCount = 0;
+    
+  
+  
+    digitalWrite(13, temp & 1);
+    temp = temp >> 1;
+ 
+    if(temp == 0){
+        restCount++;
+        if (restCount == BIT_TIME) {
+            temp = blinkCycle[cycleChoice];
+            restCount = 0;
+        }
+    }  
+}
+
+
+
+

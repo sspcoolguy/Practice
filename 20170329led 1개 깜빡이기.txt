@@ -1,0 +1,46 @@
+//////////////////////////
+
+파일 이름 : led 1개 깜빡이기
+만든   이 : 박정훈 201301851 컴퓨터 공학과
+만든 날짜 : 2017/3/29
+수정 날짜 :
+설     명 : counter 변수 사용해 불빛 깜빡이기
+
+///////////////////////////
+unsigned long counter = 0;
+unsigned const int LED_PIN = 13;
+unsigned long previousCounter = 0;
+bool ledState = LOW;
+
+
+void blinkLED(const unsigned long COUNTER, const unsigned long BLINK_TIME) {
+
+  const unsigned int CUR_COUNTER = COUNTER - previousCounter;
+
+  if (CUR_COUNTER >= BLINK_TIME) {
+    previousCounter = COUNTER;
+
+    if (ledState == LOW) {
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
+    }
+
+    digitalWrite(LED_PIN, ledState);
+  }
+}
+
+unsigned long count(void) {
+  
+  return counter++;
+}
+
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop()
+{
+  blinkLED(count(), 50000);
+}

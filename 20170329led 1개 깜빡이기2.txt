@@ -1,0 +1,45 @@
+//////////////////////////
+
+파일 이름 : led 1개 깜빡이기
+만든   이 : 박정훈 201301851 컴퓨터 공학과
+만든 날짜 : 2017/3/29
+수정 날짜 :
+설     명 : msTimer2 와 같이, counter 변수 사용해 불빛 깜빡이기
+
+///////////////////////////
+void blinkLED(void) {
+  
+  static bool ledState = HIGH;
+  
+  digitalWrite(13, ledState);
+
+  ledState = !ledState;
+}
+
+bool count(void) {
+
+  static long previousCounter = 0;
+  static long counter = 0;
+  static bool isTrue = false;
+  long curCounter;
+
+  counter++;
+  curCounter = counter - previousCounter;
+  
+  if (curCounter >= 50000) {
+    previousCounter = counter;
+    isTrue = !isTrue;
+  }
+
+  return isTrue;
+}
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  if(count()) blinkLED();
+}

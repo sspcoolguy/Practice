@@ -1,0 +1,37 @@
+int count=0;
+int pre=0;
+int a=13;
+
+int count(){
+  count++;
+  if(count>50000){
+    count=0;
+  }
+  return count;
+  }
+
+blink_led(int count){
+
+  if(count-pre==200){
+    if(pre>50000){
+      pre=0;
+    }    
+     pre=count;
+     digitalWrite(a, HIGH);
+  }
+  else{
+     digitalWrite(a, LOW);
+  }
+}
+
+void setup() {
+  pinMode(a, OUTPUT);
+}
+
+void loop() {
+ blink_led(count());
+  }
+                 
+
+
+

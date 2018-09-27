@@ -1,0 +1,62 @@
+
+int digitSelectPins[4] = {1, 2, 3, 4};
+int segmentPins[8] = {5, 6, 7, 8, 9, 10, 11, 12};
+byte numbers[10] = {0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE4, 0xFE, 0xE6};
+
+void blinkLED(int pos, int number) {
+  byte temp = numbers[number];
+  pos = pos - 1;
+  for (int i = 0; i < 8; i++) {
+    if (i == pos) {
+      digitalWrite(digitSelectPins[i], LOW);
+    } else {
+      digitalWrite(digitSelectPins[i], HIGH);
+    }
+  }
+
+  for (int i = 0; i < 8; i++) {
+    boolean ledState = temp & 0b1;
+    if (ledState) {
+      digitalWrite(segmentPins[7 - i], HIGH);
+    } else {
+      digitalWrite(segmentPins[7 - i], LOW);
+    }
+    temp = temp >> 1;
+  }
+}
+
+void clearLEDs()
+{
+  int segmentPins[8] = {5, 6, 7, 8, 9, 10, 11, 12};
+  for (int i = 0; i < 8; i++) {
+    digitalWrite(segmentPins[i], LOW);
+  }
+}
+
+void setup() {
+ for (int i = 0; i < 4; i++) {
+    pinMode(digitSelectPins[i], OUTPUT);
+  }
+  for (int i = 0; i < 8; i++) {
+    pinMode(segmentPins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  clearLEDs();
+  blinkLED(1, 1);
+  delay(5);
+  clearLEDs();
+  blinkLED(2, 2);
+  delay(5);
+  clearLEDs();
+  blinkLED(3, 3);
+  delay(5);
+  clearLEDs();
+  blinkLED(4, 4);
+  delay(5);
+}
+
+
+
+

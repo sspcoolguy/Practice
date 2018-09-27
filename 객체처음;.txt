@@ -1,0 +1,41 @@
+
+#define BIT_TIME  2
+
+
+class blinked {
+  private:
+    long  count = 0;
+    long  blinkCycle = 0b1010101010101001010100101010;
+    long  temp = 0;
+    bool  ledState = LOW;
+    int   restCount = 0;
+
+ public:
+
+    void showBlink() {
+      if (count++ < 100000) return;
+      count = 0;
+      
+    digitalWrite(13, temp & 1);
+    temp = temp >> 1;
+ 
+    if(temp == 0){
+        restCount++;
+        if (restCount == BIT_TIME) {
+            temp = blinkCycle;
+            restCount = 0;
+    }
+    }
+    }
+};
+
+void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+ 
+  blinked b1; 
+  b1.showBlink();
+}
+

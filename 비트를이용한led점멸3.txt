@@ -1,0 +1,33 @@
+/*/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 05. 10
+작성자 : 이효범
+*/
+
+void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  Pin13();
+}
+
+void Pin13() {
+  static long count = 0;
+  if(count++ < 30000) return;
+  count = 0;
+  
+  static long bin = 0b10101010101010;
+  
+  if(bin & 0b01){
+    digitalWrite(13, 1);
+  }
+  else{
+    digitalWrite(13, 0);
+  } 
+  bin = bin >> 1;
+}
+
+}

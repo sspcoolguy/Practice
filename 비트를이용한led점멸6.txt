@@ -1,0 +1,42 @@
+/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 05. 17
+작성자 : 이효범
+*/
+
+void setup(){
+  pinMode(13, OUTPUT);
+}
+
+void loop(){
+  Pin13();
+}
+
+void Pin13(){
+  static long count = 0;
+  if(count++ < 100000) return;
+  count = 0;
+  
+  static long blinkCycle = 0b1010101010101001010100101010;
+  static long temp = blinkCycle;
+  static bool ledState = LOW;
+  static int restCount = 0;
+  
+  ledState = temp & 0b1;
+  digitalWrite(13, ledState);
+  temp = temp >> 1;
+ 
+  if(temp == 0){
+    restCount++;
+    if (restCount == 2) {
+      temp = blinkCycle;
+      restCount = 0;
+    }
+ }  
+}
+
+
+
+
+

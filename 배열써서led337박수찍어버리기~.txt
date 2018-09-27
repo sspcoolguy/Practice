@@ -1,0 +1,51 @@
+/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 04. 19
+작성자 : 이효범
+*/
+
+void setup() {
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+}
+
+void loop()
+{
+  Pin13();
+  Pin12();
+}
+
+void Pin13() {
+  static long count = 0;
+  static int a[50] = {0,1,0,1,0,1,0,0,0,1,0,1,0,1,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,9};
+  static int aIndex;
+  
+  count ++;
+  if(count <50000) return;
+  count = 0;
+  aIndex ++;
+  
+  if (a[aIndex] == 0) {
+    digitalWrite(13, LOW);
+  }
+  else if (a[aIndex] == 1) {
+    digitalWrite(13, HIGH);
+  }
+  else {
+    aIndex = 0;
+  }
+}
+
+void Pin12() {
+   static long count = 0;
+  count ++;
+  if(count <50000) return;
+  count = 0;
+  
+  static bool ledState = HIGH;
+  digitalWrite(12, ledState);
+  ledState =! ledState;
+}
+  
+

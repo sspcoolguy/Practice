@@ -1,0 +1,33 @@
+/*제목 : 7세그먼트 숫자 깜빡이기
+*제작 : 17-09-04 박정훈 
+/*
+
+const unsigned int PINS[] = {2, 3, 4, 5, 6, 7, 8, 9};
+const unsigned int numbers[][8] = {
+{0, 1, 1, 0, 0, 0, 0, 0},
+{1, 1, 0, 1, 1, 0, 1, 0}
+};
+
+void blinkLED() {
+  for (int j = 0; j <= 2; j++) {
+    for (int i = 0; i <= 7; i++) {
+      int temp = numbers[j][i];
+      if (temp == true) {
+        digitalWrite(PINS[i], HIGH);
+      } else {
+        digitalWrite(PINS[i], LOW);
+      }
+    }
+    delay(1000);
+  }
+}
+
+void setup() {
+  for (int i = 0; i < 8; i++) {
+    pinMode(PINS[i], OUTPUT);
+  }
+}
+
+void loop() {
+  blinkLED();
+}

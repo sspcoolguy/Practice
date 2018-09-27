@@ -1,0 +1,53 @@
+/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 06. 14
+작성자 : 이효범
+*/
+
+///객체사용///
+class Blinked {
+    private :
+        long count = 0;
+        long  restCount = 0;
+        long blinkCycle = 0b1010101010101001010100101010;
+        long temp = 0;
+    
+
+    public:
+        void rest() {
+        if (count++ < 200000) return rest();
+        count = 0;
+        }
+
+    void outBlink() {
+        digitalWrite(13, temp & 1);
+        temp = temp >> 1;
+
+        if (temp == 0) {
+            restCount++;
+            if (restCount == 4) {
+                temp = blinkCycle;
+                restCount = 0;
+            }
+        }
+    }
+};
+
+Blinked bli;
+
+void loop() {
+    bli.rest();
+    bli.outBlink();
+}
+
+void setup() {
+    pinMode(13, OUTPUT);
+}
+
+
+
+
+
+
+

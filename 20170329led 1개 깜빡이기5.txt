@@ -1,0 +1,29 @@
+
+설     명 : msTimer2 와 같이, counter 변수 사용해 불빛 깜빡이기
+
+///////////////////////////
+void pin13(void) {
+  static const int PIN = 13;
+  pinMode(PIN, OUTPUT);
+
+  static long counter = 0;
+
+  if (counter++ < 50000) return;
+  counter = 0;
+  static bool isTrue = false;
+  isTrue = !isTrue;
+
+  if (isTrue) {
+    static bool ledState = HIGH;
+    digitalWrite(PIN, ledState);
+    ledState = !ledState;
+  }
+}
+
+
+void setup() {}
+
+void loop()
+{
+  pin13();
+}

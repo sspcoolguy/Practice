@@ -1,0 +1,43 @@
+int a;
+
+void setup()
+{
+pinMode(13, OUTPUT);
+pinMode(12, OUTPUT);
+pinMode(11, OUTPUT);
+Serial.begin(9600);
+}
+void loop()
+{
+a = millis();
+}
+pin_13(a)
+{
+ if (time + 1000 < millis()) {
+    digitalWrite(13, HIGH) ;
+  }
+  if (time + 2000 < millis()) {
+    time = millis() ;
+    digitalWrite(13, LOW) ;
+  }
+}
+pin_12(a)
+{
+ if (time + 500 < millis()) {
+    digitalWrite(12, HIGH) ;
+  }
+  if (time + 4000 < millis()) {
+    time = millis() ;
+    digitalWrite(12, LOW) ;
+  }
+}
+pin_11(a)
+{
+ if (time + 2000 < millis()) {
+    digitalWrite(11, HIGH) ;
+  }
+  if (time + 9000 < millis()) {
+    time = millis() ;
+    digitalWrite(11, LOW) ;
+  }
+}

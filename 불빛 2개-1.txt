@@ -1,0 +1,69 @@
+//확인필요 작동안됨
+
+class Counter {
+  private :
+    unsigned long ctn = 0;
+
+  public:
+    bool count(void) {
+      if (ctn++ < 30000) return false;
+      ctn = 0;
+      return true;
+    }
+};
+
+class Led{
+  private:
+    Counter *counter = new Counter();
+    const unsigned long BAKSU[2] = {0b10101010101010001010100010101, 0b1000001000010001001};
+    unsigned long baksuTemp;
+    int baksuMode;
+    int pinNumber;
+    bool ledState = LOW;
+
+  public:
+    Led(int baksuMode, int pinNumber) {
+      baksuTemp = BAKSU[baksuMode];
+      pinMode(pinNumber, OUTPUT);
+      this->baksuMode = baksuMode;
+      this->pinNumber = pinNumber;
+    }
+    
+  public:
+    Led(int baksuMode, int pinNumber, int ground) {
+      baksuTemp = BAKSU[baksuMode];
+      pinMode(pinNumber, OUTPUT);
+      pinMode(ground, OUTPUT);
+      this->baksuMode = baksuMode;
+      this->pinNumber = pinNumber;
+    }
+
+  public:
+    void flash(void) {
+      if (counter->count() == false) return;
+
+      ledState = baksuTemp & 0b1;
+      digitalWrite(pinNumber, ledState);
+      baksuTemp = baksuTemp >> 1;
+
+      if (baksuTemp == 0) {
+        static int delayCount = 3;
+        if (delayCount-- == -3) {
+          baksuTemp = BAKSU[baksuMode];
+          delayCount = 0;
+        }
+      }
+    }
+};
+
+Led led13(0, 13);
+Led led12(0, 12,11);
+Led led10(1, 10, 9);
+
+void loop() {
+  led13.flash();
+  led12.flash();
+  led10.flash();
+}
+void setup() {
+}

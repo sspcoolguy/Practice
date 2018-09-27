@@ -1,0 +1,24 @@
+int ON = HIGH;
+int OFF = LOW;
+
+byte digits_data[10] = {0xFC, 0x60, 0xDA, 0xF2, 0x66, 0xB6, 0xBE, 0xE4, 0xFE, 0xE6};
+
+int pins[] = {2,3,4,5,6,7,8,9};
+
+void setup() {
+  for(int i = 0; i < 8; i++){
+    pinMode(pins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  for(int i = 0; i <= 9; i++){
+    for(int j = 0; j < 8; j++){
+      byte segment_data = (digits_data[i] & (0x01 << j)) >> j;
+      
+      if(segment_data == 1) digitalWrite(pins[7 - j ], ON);
+      else digitalWrite(pins[7 - j], OFF);
+    }
+    delay(1000);
+  }
+}

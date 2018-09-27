@@ -1,0 +1,102 @@
+	/* 변수 및 상수 선언 */
+const int RED_PIN = 13;
+const int BLUE_PIN = 11;
+const int GREEN_PIN = 7;
+const int interval = 500;
+ 
+int RedState = LOW;
+int GrnState = LOW;
+int BluState = LOW;
+
+long previousMillis = 0;
+int AnalogCounter = 0;
+
+
+				/* 셋업 */
+void setup(){
+
+pinMode(RED_PIN,OUTPUT);
+pinMode(GREEN_PIN,OUTPUT);
+pinMode(BLUE_PIN,OUTPUT);
+
+Serial.begin(9600);
+
+}
+
+ 
+ 
+				/* 루프 */
+void loop() {
+	redFlash();
+	blueFlash();
+}
+
+
+                            /* 시리얼 포트로 명령어 입력 받아 초록 불 켜기 */
+
+void serialEvent() {                 	// 시리얼 포트로 데이터 수신
+ while (Serial.available()) {
+  char inChar = (char)Serial.read(); 	// 한 바이트 읽기
+  if (inchar == '\n' || inChar == '\r') {
+
+   if(inputString.equals("on"))
+     greendFlash(1);
+
+   if(inputString.equals("off"))
+     redFlash(-1);
+  }
+}
+
+
+				/* 빨간 불 */
+void redFlash(){                   
+
+
+   unsigned long currentMillis = millis();          //현재까지의 시간
+   if(currentMillis - previousMillis > interval) {//0.5초 계산
+ 	previousMillis = currentMillis;
+
+   if (RedState == LOW)                         //off일경우 on
+	RedState = HIGH;
+	AnalogCounter= AnalogCounter + 8;
+   else
+	RedState = LOW;                         //on일경우 off
+
+   digitalWrite(RED_PIN, RedState);             //RedState의 상태에 따른 점등
+ }
+}
+
+
+
+
+			       /* 초록 불 */
+void greenFlash(int var){
+    if(var > 0){                                   //시리얼 포트로 on이 입력 됬을 때
+
+   unsigned long currentMillis = millis();         //현재까지의 시간
+   if(currentMillis - previousMillis > interval) { //0.5초 계산
+ 	previousMillis = currentMillis;
+
+   if (GrnState == LOW)                         //off일경우 on
+	GrnState = HIGH;
+   else
+	GrnState = LOW;                         //on일경우 off
+   digitalWrite(GREEN_PIN, GrnState);             //GrnState의 상태에 따른 점등
+  }
+ }
+
+     if(var < 0)                                   //시리얼 포트로 off가 입력 됬을 때
+      digitalWrite(GREEN_PIN, LOW);
+}
+
+
+
+                              /* 파란 불 */
+
+void blueFlash()
+{
+	if(AnalogCounter > 255)
+	 AnalogCounter = 0;
+        else
+	 AnalogWrite(GREEN_PIN, AnalogCounter);
+}

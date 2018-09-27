@@ -1,0 +1,35 @@
+/*
+  13번 핀 점멸
+  소프트웨어 수정 :  2017. 8. 20.
+  소프트웨어 작성 :  2014. 3. 29.
+  작성자 : 이효범
+  충남 서산시 해미면 한서대학교 컴퓨터공학과.
+*/
+
+float count = 0;
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+
+}
+
+void pin13()
+{
+  count++;
+  if (count < 10000) return;
+  count = 0;
+  
+  
+
+  static bool is = HIGH;
+  digitalWrite(13, is);
+  is = !is;
+}
+
+
+
+void loop()
+{
+  pin13();
+}

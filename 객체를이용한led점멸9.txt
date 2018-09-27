@@ -1,0 +1,62 @@
+/*
+LED 점멸하는 프로그램 (아두이노)
+소프트웨어 작성 : 2017. 04. 05
+소프트웨어 수정 : 2017. 09. 11
+작성자 : 이효범
+*/
+
+///객체사용///
+class Blink {
+    private :
+        long count = 0;
+        long restCount = 0;
+        long blinkRhythm[3] = {0b1010101010101001010100101010, 0b101010010010, 0b1010100};
+        long blinkTemp = 0;
+        int  ground = 0;
+        int  pinNumber = 0;
+        int  rhythmType = 0;
+        
+    public:
+        Blink(int _ground, int _pinNumber, int _rhythmType){
+            ground = _ground;
+            pinNumber = _pinNumber;
+            rhythmType = _rhythmType;
+            pinMode(ground, OUTPUT);
+            pinMode(pinNumber, OUTPUT);
+        }
+        
+        Blink(int _pinNumber, int _rhythmType){      
+            pinNumber = _pinNumber;
+            rhythmType = _rhythmType;
+            pinMode(pinNumber, OUTPUT);
+        }
+         
+        void blinkRun() {
+        if (count++ < 100000) return blinkRun();
+        count = 0;
+
+        digitalWrite(pinNumber, blinkTemp & 1);
+        blinkTemp = blinkTemp >> 1;
+        if (blinkTemp == 0) {
+            restCount++;
+            if (restCount == 4) {
+                blinkTemp = blinkRhythm[rhythmType];
+                restCount = 0;
+            }
+        }
+
+    }
+};
+
+Blink b1(13,0);
+Blink b2(12,1);  
+Blink b3(10,8,2);
+
+void loop() {
+    b1.blinkRun();
+    b2.blinkRun();
+    b3.blinkRun();
+}
+
+void setup() {
+}

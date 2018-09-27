@@ -1,0 +1,50 @@
+int latch_pin = 1;
+int clock_pin = 2;
+int data_pin = 3;
+ 
+int dec[10] = {126,72,61,109,75,103,119,76,127,79};
+ int numberToDisplay[2][4]={
+  {4,3,2,1},
+  {8,7,6,5}, 
+};
+ 
+//Setting up the pins as output
+void setup(){
+  pinMode(latch_pin,OUTPUT);
+  pinMode(clock_pin,OUTPUT);
+  pinMode(data_pin,OUTPUT); 
+  pinMode(4,OUTPUT);
+  pinMode(5,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(7,OUTPUT);
+}
+ 
+void display_number(int numberToDisplay[],int time_limit){
+  
+  int count;
+  int display_number;
+  for(int t = 0;t < time_limit;t++){
+    for (int j=0;j<4;j++){
+      count = numberToDisplay[j]; 
+      int i=j+4;
+      digitalWrite(latch_pin,LOW);  
+      display_number = dec[count];      
+      shiftOut(data_pin,clock_pin, MSBFIRST,display_number);    
+      digitalWrite(latch_pin, HIGH);
+ 
+      digitalWrite(i,LOW);  
+      
+      //turn off It's light 
+      digitalWrite(latch_pin,LOW);
+      shiftOut(data_pin,clock_pin, MSBFIRST,0);
+      digitalWrite(latch_pin, HIGH);
+      digitalWrite(i,HIGH);  
+    }
+  }  
+}
+ 
+void loop(){
+    for (int i=0 ;i<2;i++){
+      display_number(numberToDisplay[i],500); 
+    }
+}
